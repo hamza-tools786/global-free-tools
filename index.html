@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Free Tools</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f2f5fa;
+  color: #222;
+}
+header {
+  background: #102b50;
+  color: white;
+  text-align: center;
+  padding: 30px 10px;
+}
+header h1 { margin: 0; }
+.container {
+  max-width: 900px;
+  margin: 25px auto;
+  padding: 15px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 18px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px #ddd;
+}
+input, textarea, button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+}
+button {
+  background: #1265ce;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+h2 { color: #1265ce; }
+footer {
+  text-align: center;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Global Free Tools</h1>
+<p>Free Online Tools for Everyone</p>
+</header>
+
+<div class="container">
+<div class="grid">
+
+<div class="card">
+<h2>Word Counter</h2>
+<textarea id="words" placeholder="Enter your text"></textarea>
+<p id="result">Words: 0 | Characters: 0</p>
+</div>
+
+<div class="card">
+<h2>Age Calculator</h2>
+<input type="date" id="dob">
+<button onclick="ageCalc()">Calculate Age</button>
+<p id="ageResult"></p>
+</div>
+
+<div class="card">
+<h2>QR Code Generator</h2>
+<input id="qrText" placeholder="Enter text or website URL">
+<button onclick="makeQR()">Generate QR Code</button>
+<div id="qrResult"></div>
+</div>
+
+<div class="card">
+<h2>Calculator</h2>
+<input id="calc" placeholder="Example: 10+20">
+<button onclick="calculate()">Calculate</button>
+<p id="calcResult"></p>
+</div>
+
+</div>
+</div>
+
+<footer>
+<p>© 2026 Global Free Tools | Free Online Tools</p>
+</footer>
+
+<script>
+document.getElementById("words").addEventListener("input", function() {
+ let t = this.value.trim();
+ let count = t ? t.split(/\s+/).length : 0;
+ document.getElementById("result").innerText =
+ "Words: " + count + " | Characters: " + this.value.length;
+});
+
+function ageCalc() {
+ let d = new Date(document.getElementById("dob").value);
+ if (!document.getElementById("dob").value || d > new Date()) {
+  document.getElementById("ageResult").innerText = "Enter a valid date";
+  return;
+ }
+ let today = new Date();
+ let age = today.getFullYear() - d.getFullYear();
+ if (today.getMonth() < d.getMonth() ||
+ (today.getMonth() == d.getMonth() && today.getDate() < d.getDate())) age--;
+ document.getElementById("ageResult").innerText = "Your age is " + age + " years";
+}
+
+function makeQR() {
+ let t = document.getElementById("qrText").value.trim();
+ if (!t) return;
+ document.getElementById("qrResult").innerHTML =
+ '<img alt="QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' +
+ encodeURIComponent(t) + '">';
+}
+
+function calculate() {
+ try {
+  let expression = document.getElementById("calc").value;
+  if (!/^[0-9+\-*/().\s]+$/.test(expression)) throw Error();
+  let answer = Function('"use strict";return (' + expression + ')')();
+  if (!Number.isFinite(answer)) throw Error();
+  document.getElementById("calcResult").innerText = "Answer: " + answer;
+ } catch(e) {
+  document.getElementById("calcResult").innerText = "Invalid calculation";
+ }
+}
+</script>
+
+</body>
+</html>
